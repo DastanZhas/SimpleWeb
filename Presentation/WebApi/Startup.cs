@@ -35,29 +35,34 @@ namespace WebApi
             services.AddApplication();
             services.AddPersistence(Configuration);
 
-            //services.AddMvc(option => option.EnableEndpointRouting = false);
-            //services.AddSpaStaticFiles(configuration =>
-            //{
-            //    configuration.RootPath = "simple-client/build";
-            //});
-
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
+            services.AddMvc(option => option.EnableEndpointRouting = false);
+            services.AddSpaStaticFiles(configuration =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
-                //c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First()); //   DELETE This line
+                configuration.RootPath = "simple-client/build";
             });
+
+            //services.AddControllers();
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
+            //    //c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First()); //   DELETE This line
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
-            }
+            app.UseCors(options =>
+            options.WithOrigins("http://localhost:3000")
+            .AllowAnyMethod()
+            .AllowAnyHeader());
+
+            //if (env.IsDevelopment())
+            //{
+            //    app.UseDeveloperExceptionPage();
+            //    app.UseSwagger();
+            //    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
+            //}
 
             app.UseHttpsRedirection();
 
@@ -70,18 +75,18 @@ namespace WebApi
                endpoints.MapControllers();
             });
 
-            //app.UseStaticFiles();
-            //app.UseSpaStaticFiles();
-            //app.UseMvc();
-            //app.UseSpa(spa =>
-            //{
-            //    spa.Options.SourcePath = Path.Join(env.ContentRootPath, "simple-client");
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+            app.UseMvc();
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = Path.Join(env.ContentRootPath, "simple-client");
 
-//                if (env.IsDevelopment())
-  //              {
-    //                spa.UseReactDevelopmentServer(npmScript: "start");
-      //          }
-        //    });
+                if (env.IsDevelopment())
+                {
+                    spa.UseReactDevelopmentServer(npmScript: "start");
+                }
+            });
         }
     }
 }
