@@ -10,7 +10,9 @@ namespace Application
 {
     public interface IAppDbContext
     {
+        DbSet<Course> Courses { get; set; }
         DbSet<Student> Students { get; set; }
+        DbSet<Teacher> Teachers { get; set; }
         Task<int> SaveChangesAsync();
     }
 }

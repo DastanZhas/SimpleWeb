@@ -14,9 +14,6 @@ namespace Persistence
                     configuration.GetConnectionString("DefaultConnection"),
                     b => b.MigrationsAssembly("WebApi")));
 
-            //services.AddDbContext<AppDbContext>(options =>
-            //options.UseSqlServer("Data Source=localhost;Initial Catalog=SimpleWebDb;Integrated Security=True"));
-
             services.AddScoped<IAppDbContext>(provider => provider.GetService<AppDbContext>());
         }
     }

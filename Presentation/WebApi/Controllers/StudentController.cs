@@ -4,15 +4,14 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-
 namespace WebApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class HomeController : ControllerBase
+    public class StudentController : ControllerBase
     {
         private IMediator mediator;
-        public HomeController(IMediator mediator)
+        public StudentController(IMediator mediator)
         {
             this.mediator = mediator;
         }
@@ -32,19 +31,19 @@ namespace WebApi.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            return Ok(await mediator.Send(new GetStudentByIdQuery { Id = id }));
+            return Ok(await mediator.Send(new GetStudentByIdQuery { studentId = id }));
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            return Ok(await mediator.Send(new DeleteStudentByIdCommand { Id = id }));
+            return Ok(await mediator.Send(new DeleteStudentByIdCommand { studentId = id }));
         }
 
         [HttpPut("[action]")]
         public async Task<IActionResult> Update(int id, UpdateStudentCommand command)
         {
-            if(id != command.Id)
+            if(id != command.studentId)
             {
                 return BadRequest();
             }

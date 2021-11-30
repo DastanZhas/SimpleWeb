@@ -9,7 +9,7 @@ namespace Application.CQRS.Queries
 {
     public class GetStudentByIdQuery : IRequest<Student>
     {
-        public int Id { get; set; }
+        public int studentId { get; set; }
         public class GetStudentByIdQueryHandler : IRequestHandler<GetStudentByIdQuery, Student>
         {
             private readonly IAppDbContext context;
@@ -20,7 +20,7 @@ namespace Application.CQRS.Queries
 
             public async Task<Student> Handle(GetStudentByIdQuery query, CancellationToken cancellationToken)
             {
-                var student = await context.Students.Where(a => a.Id == query.Id).FirstOrDefaultAsync();
+                var student = await context.Students.Where(a => a.studentId == query.studentId).FirstOrDefaultAsync();
                 if(student == null)
                 {
                     return null;
